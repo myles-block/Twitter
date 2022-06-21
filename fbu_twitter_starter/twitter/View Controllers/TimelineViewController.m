@@ -8,13 +8,15 @@
 
 #import "TimelineViewController.h"
 #import "APIManager.h"
+#import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @interface TimelineViewController ()
+
 
 @end
 
 @implementation TimelineViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -35,6 +37,16 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)didTapLogout:(id)sender {//When activated via TapLogout Button: logouts and clears APIManager
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    appDelegate.window.rootViewController = loginViewController;
+    
+    [[APIManager shared] logout];
 }
 
 /*
