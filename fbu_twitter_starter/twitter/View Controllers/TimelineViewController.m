@@ -16,7 +16,7 @@
 @interface TimelineViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *timelineTableView;
 @property (nonatomic, strong) NSMutableArray *arrayOfTweets;
-//issue with adding a property for the array of tweets and set it when the network call succeeds
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -28,6 +28,15 @@
     self.timelineTableView.dataSource = self;//needed to call UI functions below
     self.timelineTableView.delegate = self;
     
+    
+    [self fetchTweets];
+    self.refreshControl = [[UIRefreshControl alloc] init];//connects refreshcontrol to self
+    [self.refreshControl addTarget:self action: @selector(fetchTweets) forControlEvents:UIControlEventValueChanged];//when beginning of refresh control is triggered it reruns fetchMovies
+    self.timelineTableView.refreshControl = self.refreshControl;//end of refreshControl
+    
+}
+
+- (void)fetchTweets {
     
     // Get timeline
     [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
@@ -43,6 +52,7 @@
             }
             self.arrayOfTweets = (NSMutableArray *) tweets;
             [self.timelineTableView reloadData];
+            [self.refreshControl endRefreshing];
         } else {
             NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
         }
