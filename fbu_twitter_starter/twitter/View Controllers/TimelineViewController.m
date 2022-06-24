@@ -98,11 +98,12 @@
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     
     Tweet *tweet = self.arrayOfTweets[indexPath.row];
-    
+    cell.tweet = tweet;
     cell.userNameLabel.text = tweet.user.name;
     cell.userBodyLabel.text = tweet.text;
     cell.screenNameLabel.text = tweet.user.screenName;
-    cell.createdAtLabel.text = tweet.createdAtString;
+    cell.createdAtLabel.text = tweet.createdAgo;
+    
     
     NSString* retweetString = [[NSString alloc] initWithFormat:@"%d", tweet.retweetCount];
     
