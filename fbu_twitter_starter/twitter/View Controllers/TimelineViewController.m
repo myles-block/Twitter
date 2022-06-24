@@ -13,6 +13,7 @@
 #import "Tweet.h"
 #import "TweetCell.h"
 #import "ComposeViewController.h"
+#import "DetailViewController.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *timelineTableView;
@@ -81,13 +82,25 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    UINavigationController *navigationController = [segue destinationViewController];
-    // Pass the selected object to the new view controller.
-    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
-    composeController.delegate = self;
+    if([[segue identifier] isEqualToString:@"ComposeViewController"])
+    {
+        // Get the new view controller using [segue destinationViewController].
+        UINavigationController *navigationController = [segue destinationViewController];
+        // Pass the selected object to the new view controller.
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+        
+    }
+    if([[segue identifier] isEqualToString:@"DetailsViewController"])
+    {
+        NSIndexPath *senderIndex = [self.timelineTableView indexPathForCell: sender];
+        Tweet *tweet = self.arrayOfTweets[senderIndex.row];
+        UINavigationController *navVC = [segue destinationViewController];
+        DetailViewController *detailViewController = (DetailViewController*)navVC.topViewController;
+        detailViewController.tweet = tweet;
+//        navVC.topViewController;
+    }
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.arrayOfTweets.count;

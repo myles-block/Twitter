@@ -28,7 +28,7 @@
     if(self.tweet.favorited == NO){
         self.tweet.favorited = YES;
         self.tweet.favoriteCount += 1;
-        [self.likeButton setImage:[UIImage imageNamed:@"favor-icon-red"] forState:UIControlStateNormal];
+        	
         [self refreshData];
         //MARK: work on updating cell UI
         // TODO: Update cell UI
@@ -71,7 +71,7 @@
         //MARK: work on updating cell UI
         // TODO: Update cell UI
         // TODO: Send a POST request to the POST favorites/create endpoint
-         [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
+        [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
              if(error){
                   NSLog(@"Error retweeting tweet: %@", error.localizedDescription);
              }
